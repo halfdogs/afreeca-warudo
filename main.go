@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/devhalfdog/afreecachat"
+	"github.com/halfdogs/soopchat"
 	"github.com/hypebeast/go-osc/osc"
 	"github.com/joho/godotenv"
 	"github.com/tidwall/gjson"
@@ -21,7 +21,7 @@ const (
 )
 
 var (
-	chatClient *afreecachat.Client
+	chatClient *soopchat.Client
 	oscClient  *osc.Client
 	client     *http.Client = &http.Client{Timeout: 5 * time.Second}
 	stream     bool         = false
@@ -94,17 +94,16 @@ func getStation() (int, error) {
 }
 
 func setupChat() error {
-	token := afreecachat.Token{
-		BJID: bj,
-		Flag: "524304",
+	token := soopchat.Token{
+		StreamerID: bj,
 	}
 
 	return chat(token)
 }
 
-func chat(token afreecachat.Token) error {
+func chat(token soopchat.Token) error {
 	var err error
-	chatClient, err = afreecachat.NewClient(token)
+	chatClient, err = soopchat.NewClient(token)
 	if err != nil {
 		return err
 	}
@@ -115,7 +114,7 @@ func chat(token afreecachat.Token) error {
 		}
 	})
 
-	chatClient.OnBalloon(func(balloon afreecachat.Balloon) {
+	chatClient.OnBalloon(func(balloon soopchat.Balloon) {
 		log.Printf("nick : %s, count : %d\n", balloon.User.Name, balloon.Count)
 		msg := osc.NewMessage("/osc/ballon")
 		msg.Append(balloon.User.Name)
@@ -126,5 +125,5 @@ func chat(token afreecachat.Token) error {
 		}
 	})
 
-	return chatClient.Connect()
+	return chatClient.MustConnect()
 }
