@@ -1,5 +1,5 @@
 ### 참고
-- [https://github.com/you0me0/soopchat](https://github.com/you0me0/soopchat)
+- [https://github.com/halfdogs/soopchat](https://github.com/halfdogs/soopchat)
 
 afreeca랑 warudo 연동 예제
 
